@@ -1,0 +1,15 @@
+services:
+  menu:
+    build: .
+    ports:
+      - "8100:8000"
+    volumes:
+      - bestillinger:/app/data
+  kasse:
+    image: curlimages/curl
+    command: curl -sf --retry 5 --retry-connrefused http://menu:8000
+    depends_on:
+      - menu
+
+volumes:
+  bestillinger:

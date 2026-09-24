@@ -1,0 +1,38 @@
+name: kantine
+on: push
+jobs:
+  kantine:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Opgave 1
+      - run: docker run --rm alpine echo "hej fra kantinen"
+
+      # Opgave 2-7
+      - run: bash kantine/kokken.sh && bash kantine/kokken.sh
+
+      # Opgave 8
+      - run: docker build -t dagensret kantine
+
+      # Opgave 9
+      - run: docker run -d --name frokost -p 8100:8000 dagensret
+      - run: sleep 3 && curl -f http://localhost:8100
+      - run: docker rm -f frokost
+
+      # Opgave 10
+      - run: docker run -d --name frokost2 -p 9110:8000 dagensret
+      - run: sleep 3 && curl -f http://localhost:9110
+      - run: docker rm -f frokost2
+
+      # Opgave 11
+      - run: bash kantine/dagensret.sh && bash kantine/dagensret.sh
+
+      # Opgave 12
+      - run: bash kantine/bakke.sh
+
+      # Opgave 15-16
+      - run: cd kantine && docker compose up -d --build menu
+      - run: sleep 3 && curl -f http://localhost:8100
+      - run: cd kantine && docker compose run --rm kasse
+      - run: cd kantine && docker compose down -v && echo "kantine lukket ned"
