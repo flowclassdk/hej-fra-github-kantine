@@ -3,8 +3,7 @@
 set -e
 
 docker run -d --name menu nginx:alpine
-docker exec menu mkdir -p /srv/frokost/retter
-docker exec menu ls /srv/frokost/retter
+docker exec menu ls /etc/nginx/conf.d
 docker logs menu
 docker run -d --name menu2 nginx:alpine
 docker ps
